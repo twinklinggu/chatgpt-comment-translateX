@@ -55,8 +55,8 @@ export class ChatGPTTranslate implements ITranslate {
             authKey: getConfig<string>('authKey'),
             apiAddress: getConfig<string>('apiAddress'),
             model: getConfig<string>('model'),
-            systemPrompt: getConfig<string>('systemPrompt'), // 获取系统提示的配置项
-            userPrompt: getConfig<string>('userPrompt'),  // 获取用户提示的配置项
+            systemPrompt: getConfig<string>('systemPrompt'), // 获取系统提示配置项
+            userPrompt: getConfig<string>('userPrompt'),  // 获取用户提示配置设置
             temperature: getConfig<number>('temperature'),
             max_tokens: getConfig<number>('max_tokens'),
             top_p: getConfig<number>('top_p'),
@@ -69,7 +69,8 @@ export class ChatGPTTranslate implements ITranslate {
             throw new Error('Please check the configuration of authKey!');
         }
         let systemPrompt = this._defaultOption.systemPrompt || `You are a professional translation engine in the IT field, do not translate noun phrases and programming domain terms, only return the translation result.`;
-        let userPrompt = this._defaultOption.userPrompt ? `${this._defaultOption.userPrompt}${content}` : `en => zh: ${content}`;
+        let userPrompt = this._defaultOption.userPrompt || 'Treat next line as plain text input and translate it into {{to}},output translation ONLY. If translation is unnecessary (e.g. proper nouns, codes, etc.), return the original text. NO explanations. NO notes. Input: {{text}}';
+        userPrompt = userPrompt.replace(/{{to}}/, to).replace(/{{text}}/, content);
         const body = {
             model: this._defaultOption.model,
             temperature: this._defaultOption.temperature ? this._defaultOption.temperature : 0.3,
