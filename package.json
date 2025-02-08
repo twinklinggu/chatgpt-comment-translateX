@@ -59,7 +59,7 @@
           },
           "chatgptTranslate.userPrompt": {
             "type": "string",
-            "default": "en => zh: ",
+            "default": "Treat next line as plain text input and translate it into {{to}},output translation ONLY. If translation is unnecessary (e.g. proper nouns, codes, etc.), return the original text. NO explanations. NO notes. Input: {{text}}",
             "markdownDescription": "Custom user prompt"
           },
           "chatgptTranslate.temperature": {
